@@ -8,5 +8,5 @@ readme = "README.md"
 license = { file = "LICENSE" }
 
 [build-system]
-requires = ["setuptools>=42", "cmake>=3.12"]
+requires = ["setuptools>=42", "cmake>=3.12", "wheel", "ninja"]
 build-backend = "setuptools.build_meta"
