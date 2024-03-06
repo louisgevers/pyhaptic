@@ -1,0 +1,1 @@
+from pyhaptic.device import Device
