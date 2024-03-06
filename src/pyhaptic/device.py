@@ -15,14 +15,29 @@ class Device:
     def get_position(self) -> Tuple[float, float, float]:
         return dhd.get_position(self._id)
 
+    def get_orientation(self) -> Tuple[float, float, float]:
+        return dhd.get_orientation_rad(self._id)
+
+    def get_position_and_orientation(self) -> Tuple[float, float, float]:
+        return dhd.get_position_and_orientation_rad(self._id)
+
     def get_force(self) -> Tuple[float, float, float]:
         return dhd.get_force(self._id)
 
     def set_force(self, fx: float, fy: float, fz: float) -> None:
         dhd.set_force(fx, fy, fz, self._id)
 
+    def get_force_and_torque(self) -> Tuple[float, float, float, float, float, float]:
+        return dhd.get_force_and_torque(self._id)
+
+    def set_force_and_torque(self, fx: float, fy: float, fz: float, tx: float, ty: float, tz: float) -> None:
+        dhd.set_force_and_torque(fx, fy, fz, tx, ty, tz, self._id)
+
     def enable_force(self, on: bool = True) -> None:
         dhd.enable_force(on, self._id)
+
+    def enable_gravity_compensation(self, on: bool = True) -> None:
+        dhd.set_gravity_compensation(on, self._id)
 
     def close(self) -> None:
         dhd.close(self._id)
