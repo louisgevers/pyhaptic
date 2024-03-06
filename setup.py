@@ -126,7 +126,7 @@ setup(
     version="0.0.0",
     author="Louis Gevers",
     author_email="louis.gevers@epfl.ch",
-    description="Python bindings for Force Dimension Haptic SDK.",
+    description="Unofficial Python bindings for Force Dimension Haptic SDK.",
     packages=["pyhaptic"],
     package_dir={"pyhaptic": "src/pyhaptic"},
     ext_modules=[CMakeExtension("pyhaptic.dhd", sourcedir="src/dhd")],

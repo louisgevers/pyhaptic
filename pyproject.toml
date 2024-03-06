@@ -3,7 +3,7 @@ name = "pyhaptic"
 version = "0.0.0"
 requires-python = ">=3.9"
 authors = [{ name = "Louis Gevers", email = "louis.gevers@epfl.ch" }]
-description = "Python bindings for Force Dimension Haptic SDK."
+description = "Unnoficial Python bindings for Force Dimension Haptic SDK."
 readme = "README.md"
 license = { file = "LICENSE" }
 dependencies = ["numpy"]
