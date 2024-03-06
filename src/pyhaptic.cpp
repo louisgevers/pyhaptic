@@ -175,6 +175,11 @@ PYBIND11_MODULE(pyhaptic, m)
     def_get1d(m, "get_angle_deg", &dhdGetDeviceAngleDeg, "This function retrieves the device base plate angle around the Y axis.");
     def_set1d(m, "set_angle_deg", &dhdSetDeviceAngleDeg, "angle", "This function sets the device base plate angle around the (inverted) Y axis. Please refer to your device user manual for more information on your device coordinate system. An angle value of 0 corresponds to the device \"upright\" position, with its base plate perpendicular to axis X. An angle value of 90 corresponds to the device base plate resting horizontally.");
 
+    // Error management
+    m.def("get_last_error", &dhdErrorGetLast, "Returns the last error code encountered in the running thread. See error management for details");
+    m.def("get_last_error_str", &dhdErrorGetLastStr, "Returns a brief string describing the last error encountered in the running thread. See error management for details.");
+    m.def("get_error_str", &dhdErrorGetStr, "Returns a brief string describing a given error code. See error management for details.");
+
     // SDK
     m.def("get_sdk_version", &dhdGetSDKVersion, "This function returns the SDK complete set of version numbers.");
     m.def("get_sdk_version_str", &dhdGetSDKVersionStr, "This function returns a string that fully describes the SDK version.");
@@ -217,11 +222,6 @@ PYBIND11_MODULE(pyhaptic, m)
     // dhdSetBaseAngleZRad()
     // dhdSetBaseAngleZDeg()
     // dhdSetVibration()
-
-    // -- ERROR MANAGEMENT --
-    // dhdErrorGetLast()
-    // dhdErrorGetLastStr()
-    // dhdErrorGetStr()
 
     // -- OS-independent SDK
     // dhdKbHit()
