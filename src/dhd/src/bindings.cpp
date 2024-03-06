@@ -103,8 +103,9 @@ void def_set7d(py::module &m, const char *name, Function &&function, const char 
     m.def(name, reinterpret_cast<OutputType (*)(double, double, double, double, double, double, double, int)>(function), description, py::arg(arg0), py::arg(arg1), py::arg(arg2), py::arg(arg3), py::arg(arg4), py::arg(arg5), py::arg(arg6), py::arg("ID") = -1);
 }
 
-PYBIND11_MODULE(pyhaptic, m)
+PYBIND11_MODULE(dhd, m)
 {
+    m.attr("__name__") = "pyhaptic.dhd";
     m.doc() = "Python bindings for Force Dimension Haptic SDK.";
 
     // Connection management

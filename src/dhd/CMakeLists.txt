@@ -1,11 +1,13 @@
 cmake_minimum_required(VERSION 3.16)
-project(pyhaptic)
+project(dhd)
 
 set (CMAKE_CXX_STANDARD 17)
 
-add_subdirectory(pybind11)
 
-set(sdkdir ${CMAKE_CURRENT_SOURCE_DIR}/external/force-dimension-sdk)
+set(pybinddir ${CMAKE_CURRENT_SOURCE_DIR}/include/pybind11)
+set(sdkdir ${CMAKE_CURRENT_SOURCE_DIR}/include/force-dimension-sdk)
+
+add_subdirectory(${pybinddir})
 
 find_library(DHD REQUIRED
     NAMES dhd
@@ -15,6 +17,7 @@ find_library(DHD REQUIRED
 find_library(IOKIT_LIB REQUIRED NAMES IOKit)
 find_library(CORE_FOUNDATION_LIB REQUIRED NAMES CoreFoundation)
 
+message(STATUS "pybind11: ${pybinddir}")
 message(STATUS "Force Dimension dhd: ${DHD}")
 message(STATUS "IOKit: ${IOKIT_LIB}")
 message(STATUS "CoreFoundation: ${CORE_FOUNDATION_LIB}")
@@ -22,7 +25,8 @@ message(STATUS "CoreFoundation: ${CORE_FOUNDATION_LIB}")
 include_directories(${sdkdir}/include/)
 link_directories(${sdkdir}/lib/release/mac-arm64-clang/)
 
-pybind11_add_module(pyhaptic src/pyhaptic.cpp)
-target_link_libraries(pyhaptic PRIVATE ${DHD} ${IOKIT_LIB} ${CORE_FOUNDATION_LIB})
+pybind11_add_module(dhd src/bindings.cpp)
+# set_target_properties(dhd PROPERTIES OUTPUT_NAME pyhaptic/dhd)
+target_link_libraries(dhd PRIVATE ${DHD} ${IOKIT_LIB} ${CORE_FOUNDATION_LIB})
 
-target_compile_definitions(pyhaptic PRIVATE)
+target_compile_definitions(dhd PRIVATE)

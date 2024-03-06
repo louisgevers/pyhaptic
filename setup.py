@@ -4,7 +4,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from setuptools import Extension, setup
+from setuptools import Extension, setup 
 from setuptools.command.build_ext import build_ext
 
 # Convert distutils Windows platform specifiers to CMake -A arguments
@@ -127,7 +127,9 @@ setup(
     author="Louis Gevers",
     author_email="louis.gevers@epfl.ch",
     description="Python bindings for Force Dimension Haptic SDK.",
-    ext_modules=[CMakeExtension("pyhaptic")],
+    packages=["pyhaptic"],
+    package_dir={"pyhaptic": "src/pyhaptic"},
+    ext_modules=[CMakeExtension("pyhaptic.dhd", sourcedir="src/dhd")],
     cmdclass={"build_ext": CMakeBuild},
     zip_safe=False,
     python_requires=">=3.9",
