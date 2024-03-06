@@ -1,9 +1,9 @@
-import numpy as np
-from typing import Optional
-
 import pyhaptic.dhd as dhd
 
-class Device():
+from typing import Optional, Tuple
+
+
+class Device:
     def __init__(self, id: Optional[int] = None) -> None:
         if id is None:
             self._id = dhd.open()
@@ -12,10 +12,10 @@ class Device():
         if self._id is None:
             raise ConnectionError(f"Could not connect to device (ID: {id})")
 
-    def get_position(self) -> np.ndarray:
+    def get_position(self) -> Tuple[float, float, float]:
         return dhd.get_position(self._id)
 
-    def get_force(self) -> np.ndarray:
+    def get_force(self) -> Tuple[float, float, float]:
         return dhd.get_force(self._id)
 
     def set_force(self, fx: float, fy: float, fz: float) -> None:
