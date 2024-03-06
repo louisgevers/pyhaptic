@@ -23,7 +23,7 @@ class Device:
 
     def get_force(self) -> Tuple[float, float, float]:
         return dhd.get_force(self._id)
-
+    
     def set_force(self, fx: float, fy: float, fz: float) -> None:
         dhd.set_force(fx, fy, fz, self._id)
 
