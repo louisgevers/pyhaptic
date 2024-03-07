@@ -9,7 +9,7 @@ class Device:
             self._id = dhd.open()
         else:
             self._id = dhd.open_id(id)
-        if self._id is None:
+        if self._id < 0:
             raise ConnectionError(f"Could not connect to device (ID: {id})")
 
     def get_position(self) -> Tuple[float, float, float]:
