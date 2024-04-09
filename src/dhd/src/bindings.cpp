@@ -185,6 +185,11 @@ PYBIND11_MODULE(dhd, m)
     m.def("get_sdk_version", &dhdGetSDKVersion, "This function returns the SDK complete set of version numbers.");
     m.def("get_sdk_version_str", &dhdGetSDKVersionStr, "This function returns a string that fully describes the SDK version.");
 
+    // Expert SDK - Use at own risk!
+    m.def("enable_expert_mode", &dhdEnableExpertMode, "This function enables the expert mode.");
+    m.def("disable_expert_mode", &dhdDisableExpertMode, "This function disables the expert mode.");
+    def_set1i(m, "set_time_guard", &dhdSetTimeGuard, "us", "This function toggles the use of the TimeGuard feature with an arbitrary minimum period.");
+    
     // - REMAINING FUNCTIONS TO BE IMPLEMENTED -
     // --- STANDARD SDK --
     // dhdEnableSimulator()

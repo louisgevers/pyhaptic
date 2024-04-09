@@ -12,6 +12,8 @@ class Device:
         if self._id < 0:
             raise ConnectionError(f"Could not connect to device (ID: {id})")
 
+        self._expert_mode = False
+
     def get_position(self) -> Tuple[float, float, float]:
         return dhd.get_position(self._id)
 
@@ -41,6 +43,16 @@ class Device:
 
     def get_frequency(self) -> float:
         return dhd.get_com_freq(self._id)
+
+    def set_expert_mode(self, on: bool) -> None:
+        dhd.enable_expert_mode() if on else dhd.disable_expert_mode()
+        self._expert_mode = on
+
+    def set_time_guard(self, ms: int) -> None:
+        if not self._expert_mode:
+            raise PermissionError("Setting time guard requires expert mode!")
+        dhd.set_time_guard(ms * 1000)
+
 
     def close(self) -> None:
         dhd.close(self._id)
