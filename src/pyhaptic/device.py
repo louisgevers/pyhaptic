@@ -51,7 +51,7 @@ class Device:
     def set_time_guard(self, ms: int) -> None:
         if not self._expert_mode:
             raise PermissionError("Setting time guard requires expert mode!")
-        dhd.set_time_guard(ms * 1000)
+        dhd.set_time_guard(ms * 1000, self._id)
 
 
     def close(self) -> None:
