@@ -39,5 +39,8 @@ class Device:
     def enable_gravity_compensation(self, on: bool = True) -> None:
         dhd.set_gravity_compensation(on, self._id)
 
+    def get_frequency(self) -> float:
+        return dhd.get_com_freq(self._id)
+
     def close(self) -> None:
         dhd.close(self._id)
