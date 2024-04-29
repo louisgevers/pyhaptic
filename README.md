@@ -9,7 +9,18 @@ Clone the repository and its submodules:
 $ git clone --recurse-submodules
 ```
 
-Download the [Force Dimension SDK](https://www.forcedimension.com/software/sdk), and move the folder under [src/dhd/include](src/dhd/include) (and rename the folder to `force-dimension-sdk`).
+Download the [Force Dimension SDK](https://www.forcedimension.com/software/sdk).
+To install pyhaptic with the SDK, you have two options:
+
+**(a) Environment variable**
+
+Point the `FORCE_DIMENSION_SDK` variable to the SDK's path:
+
+```$ export FORCE_DIMENSION_SDK=/path/to/sdk```
+
+**(b) Move the SDK**
+
+Move the SDK folder under [src/dhd/include](src/dhd/include) (and rename the folder to `force-dimension-sdk`).
 The structure should look as follows:
 
 ```
@@ -23,7 +34,7 @@ The structure should look as follows:
                 - ...
 ```
 
-Then install the library in your environment of choice, this will create the bindings and interface under the `pyhaptic` module (raw bindings under `pyhaptic.dhd`).
+Once you have done either **(a)** or **(b)**, install pyhaptic in your environment of choice, this will create the bindings and interface under the `pyhaptic` module (and raw bindings under `pyhaptic.dhd`).
 
 ```bash
 $ pip install .

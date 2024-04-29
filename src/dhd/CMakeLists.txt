@@ -5,7 +5,14 @@ set (CMAKE_CXX_STANDARD 17)
 
 
 set(pybinddir ${CMAKE_CURRENT_SOURCE_DIR}/include/pybind11)
-set(sdkdir ${CMAKE_CURRENT_SOURCE_DIR}/include/force-dimension-sdk)
+# Use environment variable if it exists, otherwise local install
+if (DEFINED ENV{FORCE_DIMENSION_SDK})
+    set(sdkdir $ENV{FORCE_DIMENSION_SDK})
+else()
+    set(sdkdir ${CMAKE_CURRENT_SOURCE_DIR}/include/force-dimension-sdk)
+endif()
+
+message(STATUS "Force Dimension SDK: ${sdkdir}")
 
 add_subdirectory(${pybinddir})
 
