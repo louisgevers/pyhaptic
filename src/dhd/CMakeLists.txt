@@ -16,24 +16,38 @@ message(STATUS "Force Dimension SDK: ${sdkdir}")
 
 add_subdirectory(${pybinddir})
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    set(dhddir ${sdkdir}/lib/release/mac-arm64-clang/)
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    set(dhddir ${sdkdir}/lib/release/lin-x86_64-gcc/)
+else()
+    message(FATAL_ERROR "Platform '${CMAKE_SYSTEM_NAME}' not supported.")
+endif()
+
 find_library(DHD REQUIRED
     NAMES dhd
-    PATHS ${sdkdir}/lib/release/mac-arm64-clang/)
+    PATHS ${dhddir})
 
-# These are derived from the MacOS MakeFile, check other libraries for other platforms.
-find_library(IOKIT_LIB REQUIRED NAMES IOKit)
-find_library(CORE_FOUNDATION_LIB REQUIRED NAMES CoreFoundation)
+if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    # These are derived from the MacOS MakeFile, check other libraries for other platforms.
+    find_library(IOKIT_LIB REQUIRED NAMES IOKit)
+    find_library(CORE_FOUNDATION_LIB REQUIRED NAMES CoreFoundation)
+    message(STATUS "IOKit: ${IOKIT_LIB}")
+    message(STATUS "CoreFoundation: ${CORE_FOUNDATION_LIB}")
+    set(LINK_LIBS ${IOKIT_LIB} ${CORE_FOUNDATION_LIB})
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    find_library(USB_LIB REQUIRED NAMES usb-1.0)
+    set(LINK_LIBS ${USB_LIB})
+endif()
 
 message(STATUS "pybind11: ${pybinddir}")
 message(STATUS "Force Dimension dhd: ${DHD}")
-message(STATUS "IOKit: ${IOKIT_LIB}")
-message(STATUS "CoreFoundation: ${CORE_FOUNDATION_LIB}")
 
 include_directories(${sdkdir}/include/)
-link_directories(${sdkdir}/lib/release/mac-arm64-clang/)
+link_directories(${dhddir})
 
 pybind11_add_module(dhd src/bindings.cpp)
 # set_target_properties(dhd PROPERTIES OUTPUT_NAME pyhaptic/dhd)
-target_link_libraries(dhd PRIVATE ${DHD} ${IOKIT_LIB} ${CORE_FOUNDATION_LIB})
+target_link_libraries(dhd PRIVATE ${DHD} ${LINK_LIBS})
 
 target_compile_definitions(dhd PRIVATE)
