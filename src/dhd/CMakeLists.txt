@@ -27,6 +27,10 @@ endif()
 find_library(DHD REQUIRED
     NAMES dhd
     PATHS ${dhddir})
+# Need DRD to connect with Sigma
+find_library(DRD REQUIRED
+    NAMES drd
+    PATHS ${dhddir})
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     # These are derived from the MacOS MakeFile, check other libraries for other platforms.
@@ -42,12 +46,13 @@ endif()
 
 message(STATUS "pybind11: ${pybinddir}")
 message(STATUS "Force Dimension dhd: ${DHD}")
+message(STATUS "Force Dimension drd: ${DRD}")
 
 include_directories(${sdkdir}/include/)
 link_directories(${dhddir})
 
 pybind11_add_module(dhd src/bindings.cpp)
 # set_target_properties(dhd PROPERTIES OUTPUT_NAME pyhaptic/dhd)
-target_link_libraries(dhd PRIVATE ${DHD} ${LINK_LIBS})
+target_link_libraries(dhd PRIVATE ${DHD} ${DRD} ${LINK_LIBS})
 
 target_compile_definitions(dhd PRIVATE)

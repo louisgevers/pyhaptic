@@ -1,5 +1,6 @@
 #include <pybind11/pybind11.h>
 #include <dhdc.h>
+#include <drdc.h>
 
 namespace py = pybind11;
 
@@ -108,12 +109,15 @@ PYBIND11_MODULE(dhd, m)
     m.attr("__name__") = "pyhaptic.dhd";
     m.doc() = "Python bindings for Force Dimension Haptic SDK.";
 
-    // Connection management
-    m.def("open", &dhdOpen, "This function opens a connection to the first available device connected to the system. The order in which devices are opened persists until devices are added or removed.");
+    // Connection management (NOTE: use of drd for sigma)
+    m.def("open", &drdOpen, "This function opens a connection to the first available device connected to the system. The order in which devices are opened persists until devices are added or removed.");
     m.def("open_type", &dhdOpenType, "This function opens a connection to the first device of a given type connected to the system. The order in which devices are opened persists until devices are added or removed.");
     m.def("open_serial", &dhdOpenSerial, "This function opens a connection to the device with a given serial number (available on recent models only).");
-    def_id(m, "open_id", &dhdOpenID, "This function opens a connection to one particular device connected to the system. The order in which devices are opened persists until devices are added or removed. If the device at the specified index is already opened, its device ID is returned.");
-    def_id(m, "close", &dhdClose, "This function closes the connection to a particular device.");
+    def_id(m, "open_id", &drdOpenID, "This function opens a connection to one particular device connected to the system. The order in which devices are opened persists until devices are added or removed. If the device at the specified index is already opened, its device ID is returned.");
+    def_id(m, "close", &drdClose, "This function closes the connection to a particular device.");
+    def_id(m, "is_initialized", &drdIsInitialized, "This function checks the initialization status of a particular device. The initialization status reflects the status of the controller RESET LED. The device can be (re)initialized by calling drdAutoInit().");
+    def_id(m, "auto_init", &drdAutoInit, "This function performs automatic initialization of that particular device by robotically moving to a known position and reseting encoder counters to their correct values.");
+    def_set1b(m, "stop", &drdStop, "frc", "This function stops the robotic control loop for the given device.");
 
     // Control
     def_get3d(m, "get_position", &dhdGetPosition, "This function retrieves the position of the end-effector in Cartesian coordinates. Please refer to your device user manual for more information on your device coordinate system.");
