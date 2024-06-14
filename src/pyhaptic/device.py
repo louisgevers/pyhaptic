@@ -4,13 +4,16 @@ from typing import Optional, Tuple
 
 
 class Device:
-    def __init__(self, id: Optional[int] = None) -> None:
+    def __init__(self, id: Optional[int] = None, auto_init: bool = True) -> None:
         if id is None:
             self._id = dhd.open()
         else:
             self._id = dhd.open_id(id)
         if self._id < 0:
             raise ConnectionError(f"Could not connect to device (ID: {id})")
+
+        if auto_init and not self.is_initialized():
+            self.auto_init() 
 
         self._expert_mode = False
 
@@ -52,6 +55,12 @@ class Device:
         if not self._expert_mode:
             raise PermissionError("Setting time guard requires expert mode!")
         dhd.set_time_guard(ms * 1000, self._id)
+
+    def is_initialized(self) -> bool:
+        return dhd.is_initialized(self._id)
+
+    def auto_init(self):
+        dhd.auto_init(self._id)
 
 
     def close(self) -> None:
