@@ -84,6 +84,13 @@ void def_set3d(py::module &m, const char *name, Function &&function, const char 
 }
 
 template <typename Function>
+void def_set3d1b(py::module &m, const char *name, Function &&function, const char *arg0, const char *arg1, const char *arg2, const char *arg3, const char *description)
+{
+    using OutputType = std::invoke_result_t<Function, double, double, double, bool, int>;
+    m.def(name, reinterpret_cast<OutputType (*)(double, double, double, bool, int)>(function), description, py::arg(arg0), py::arg(arg1), py::arg(arg2), py::arg(arg3), py::arg("ID") = -1);
+}
+
+template <typename Function>
 void def_set4d(py::module &m, const char *name, Function &&function, const char *arg0, const char *arg1, const char *arg2, const char *arg3, const char *description)
 {
     using OutputType = std::invoke_result_t<Function, double, double, double, double, int>;
@@ -188,6 +195,13 @@ PYBIND11_MODULE(dhd, m)
     m.def("get_last_error", &dhdErrorGetLast, "Returns the last error code encountered in the running thread. See error management for details");
     m.def("get_last_error_str", &dhdErrorGetLastStr, "Returns a brief string describing the last error encountered in the running thread. See error management for details.");
     m.def("get_error_str", &dhdErrorGetStr, "Returns a brief string describing a given error code. See error management for details.");
+
+    // DRD
+    def_id(m, "drd_is_supported", &drdIsSupported, "This function determines if the device is supported out-of-the-box by the DRD. The regulation gains of supported devices are configured internally so that such devices are ready to use. Unsupported devices can still be operated with the DRD, but their regulation gains must first be configured using the drdSetEncPGain(), drdSetEncIGain() and drdSetEncDGain() functions.");
+    def_id(m, "drd_start", &drdStart, "This function starts the robotic control loop for the given device. The device must be initialized (either manually or with drdAutoInit()) before drdStart() can be called successfully.");
+    def_set1b(m, "drd_stop", &drdStop, "force", "This function stops the robotic control loop for the given device.");
+    def_id(m, "drd_is_moving", &drdIsMoving, "This function checks whether the particular device is moving (following a call to drdMoveToPos(), drdMoveToEnc(), drdTrackPos() or drdTrackEnc()) as opposed to holding the target position after successfully reaching it.");
+    def_set3d1b(m, "drd_move_to_pos", &drdMoveToPos, "px", "py", "pz", "block", "This function sends the device end-effector to a desired Cartesian position. The motion follows a straight line, with smooth acceleration/deceleration. The acceleration and velocity profiles can be controlled by adjusting the trajectory generation parameters.");
 
     // SDK
     m.def("get_sdk_version", &dhdGetSDKVersion, "This function returns the SDK complete set of version numbers.");

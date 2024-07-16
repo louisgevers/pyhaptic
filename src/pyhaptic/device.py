@@ -53,11 +53,29 @@ class Device:
 
     def set_time_guard(self, ms: int) -> None:
         if not self._expert_mode:
+            self.close()
             raise PermissionError("Setting time guard requires expert mode!")
         dhd.set_time_guard(ms * 1000, self._id)
 
     def is_initialized(self) -> bool:
         return dhd.is_initialized(self._id)
+
+    def move_to_pos(self, px: int, py: int, pz: int, blocking: bool = True):
+        if not dhd.drd_is_supported(self._id):
+            self.close()
+            raise RuntimeError(f"DRD not supported out of the box on device with id {self._id}. Needs configuration, refer to DRD documentation.")
+        if not self.is_initialized():
+            self.auto_init()
+        dhd.drd_start(self._id)
+        dhd.drd_move_to_pos(px, py, pz, blocking, self._id)
+        if blocking:
+            dhd.drd_stop(self._id)
+
+    def is_moving(self) -> bool:
+        return dhd.drd_is_moving(self._id)
+
+    def stop_tracking(self):
+        dhd.drd_stop(True, self._id)
 
     def auto_init(self):
         dhd.auto_init(self._id)
