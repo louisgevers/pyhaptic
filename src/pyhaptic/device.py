@@ -62,6 +62,11 @@ class Device:
     def auto_init(self):
         dhd.auto_init(self._id)
 
+    def set_base_z_angle(self, rad: float):
+        dhd.set_angle_z_rad(rad, self._id)
+
+    def get_base_z_angle(self, rad: float):
+        return dhd.get_angle_z_rad(self._id)
 
     def close(self) -> None:
         dhd.close(self._id)

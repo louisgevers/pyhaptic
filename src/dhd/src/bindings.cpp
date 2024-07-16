@@ -179,6 +179,10 @@ PYBIND11_MODULE(dhd, m)
     def_set1d(m, "set_angle_rad", &dhdSetDeviceAngleRad, "angle", "This function sets the device base plate angle around the (inverted) Y axis. Please refer to your device user manual for more information on your device coordinate system. An angle value of 0 corresponds to the device \"upright\" position, with its base plate perpendicular to axis X. An angle value of Pi/2 corresponds to the device base plate resting horizontally.");
     def_get1d(m, "get_angle_deg", &dhdGetDeviceAngleDeg, "This function retrieves the device base plate angle around the Y axis.");
     def_set1d(m, "set_angle_deg", &dhdSetDeviceAngleDeg, "angle", "This function sets the device base plate angle around the (inverted) Y axis. Please refer to your device user manual for more information on your device coordinate system. An angle value of 0 corresponds to the device \"upright\" position, with its base plate perpendicular to axis X. An angle value of 90 corresponds to the device base plate resting horizontally.");
+    def_get1d(m, "get_angle_z_rad", &dhdGetBaseAngleZRad, "This function retrieves the device base plate angle around the vertical Z axis.");
+    def_set1d(m, "set_angle_z_rad", &dhdSetBaseAngleZRad, "angle", "This function sets the device base plate angle around the vertical Z axis. Please refer to your device user manual for more information on your device coordinate system.");
+    def_get1d(m, "get_angle_z_deg", &dhdGetBaseAngleZDeg, "This function retrieves the device base plate angle around the vertical Z axis.");
+    def_set1d(m, "set_angle_z_deg", &dhdSetBaseAngleZDeg, "angle", "This function sets the device base plate angle around the vertical Z axis. Please refer to your device user manual for more information on your device coordinate system.");
 
     // Error management
     m.def("get_last_error", &dhdErrorGetLast, "Returns the last error code encountered in the running thread. See error management for details");
