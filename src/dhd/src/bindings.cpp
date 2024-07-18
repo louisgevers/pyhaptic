@@ -203,6 +203,12 @@ PYBIND11_MODULE(dhd, m)
     def_id(m, "drd_is_moving", &drdIsMoving, "This function checks whether the particular device is moving (following a call to drdMoveToPos(), drdMoveToEnc(), drdTrackPos() or drdTrackEnc()) as opposed to holding the target position after successfully reaching it.");
     def_set3d1b(m, "drd_move_to_pos", &drdMoveToPos, "px", "py", "pz", "block", "This function sends the device end-effector to a desired Cartesian position. The motion follows a straight line, with smooth acceleration/deceleration. The acceleration and velocity profiles can be controlled by adjusting the trajectory generation parameters.");
 
+    // Trajectories
+    def_id(m, "get_p_gain", &drdGetEncPGain, "This function retrieves the P gain of the PID controller that regulates the base joint positions.");
+    def_id(m, "get_i_gain", &drdGetEncIGain, "This function retrieves the I gain of the PID controller that regulates the base joint positions.");
+    def_id(m, "get_d_gain", &drdGetEncDGain, "This function retrieves the D gain of the PID controller that regulates the base joint positions.");
+    def_get3d(m, "get_pos_move_param", &drdGetPosMoveParam, "This function retrieves Cartesian positioning trajectory generation parameters.");
+
     // SDK
     m.def("get_sdk_version", &dhdGetSDKVersion, "This function returns the SDK complete set of version numbers.");
     // m.def("get_sdk_version_str", &dhdGetSDKVersionStr, "This function returns a string that fully describes the SDK version.");
