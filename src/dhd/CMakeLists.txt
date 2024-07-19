@@ -82,3 +82,6 @@ pybind11_add_module(dhd src/bindings.cpp)
 target_link_libraries(dhd PRIVATE ${DHD} ${DRD} ${LINK_LIBS})
 
 target_compile_definitions(dhd PRIVATE)
+
+add_executable(time_measurement ${CMAKE_CURRENT_SOURCE_DIR}/src/time_measurement.cpp)
+target_link_libraries(time_measurement PRIVATE ${DHD} ${DRD} ${LINK_LIBS})
